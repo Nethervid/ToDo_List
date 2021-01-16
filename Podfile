@@ -7,5 +7,6 @@ target 'ToDo List' do
 
   # Pods for ToDo List
   pod 'RealmSwift'
+  pod ‘SQLite.swift’, :git => ‘https://github.com/stephencelis/SQLite.swift.git’, :branch => ‘master’
 
 end

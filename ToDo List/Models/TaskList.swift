@@ -5,11 +5,17 @@
 //  Created by Artem Golubev on 11.01.2021.
 //
 
-import RealmSwift
+import Foundation
 
-class TaskList: Object {
-    @objc dynamic var name = ""
-    @objc dynamic var date = Date()
-    @objc dynamic var user: User?
-    let tasks = List<Task>()
+class TaskList {
+    var id = 0
+    var name = ""
+    var creationDate = Date()
+    var user = ""
+    
+    init(id: Int, name: String, user: String) {
+        self.id = id
+        self.name = name
+        self.user = user
+    }
 }

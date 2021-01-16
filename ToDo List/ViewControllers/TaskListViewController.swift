@@ -6,21 +6,21 @@
 //
 
 import UIKit
-import RealmSwift
 
 class TaskListViewController: UITableViewController {
     
-    var taskLists: Results<TaskList>!
+    var taskLists: [TaskList]!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-        let user = StorageManager.shared.user()
-        taskLists = StorageManager.shared.realm.objects(TaskList.self).filter("user = %@", user ?? "")
-        
+        updateTaskLists()
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
         navigationItem.rightBarButtonItems = [addButton, editButtonItem]
+    }
+    
+    private func updateTaskLists() {
+        taskLists = DBHelper.shared.getTaskLists()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -34,8 +34,8 @@ class TaskListViewController: UITableViewController {
     
     @IBAction func sortingList(_ sender: UISegmentedControl) {
         taskLists = sender.selectedSegmentIndex == 0
-            ? taskLists.sorted(byKeyPath: "name")
-            : taskLists.sorted(byKeyPath: "date")
+            ? DBHelper.shared.getTaskLists(order: "name")
+            : DBHelper.shared.getTaskLists(order: "creationDate")
         
         tableView.reloadData()
     }
@@ -59,20 +59,22 @@ class TaskListViewController: UITableViewController {
         let taskList = taskLists[indexPath.row]
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
-            StorageManager.shared.delete(taskList: taskList)
+            DBHelper.shared.deleteByID(taskListID: taskList.id)
+            self.taskLists.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         
         let editAction = UIContextualAction(style: .normal, title: "Edit") { (_, _, isDone) in
             self.showAlert(with: taskList) {
+                
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }
-            
             isDone(true)
         }
         
         let doneAction = UIContextualAction(style: .normal, title: "Done") { (_, _, isDone) in
-            StorageManager.shared.done(taskList: taskList)
+            DBHelper.shared.done(taskList: taskList)
+            self.updateTaskLists()
             tableView.reloadRows(at: [indexPath], with: .automatic)
             
             isDone(true)
@@ -103,15 +105,20 @@ extension TaskListViewController {
         alert.action(with: taskList) { newValue in
             
             if let taskList = taskList, let completion = completion {
-                StorageManager.shared.edit(taskList: taskList, newValue: newValue)
+                DBHelper.shared.update(taskList: taskList, newName: newValue)
+                self.updateTaskLists()
                 completion()
             } else {
-                let taskList = TaskList()
-                taskList.name = newValue
                 
-                StorageManager.shared.save(taskList: taskList)
-                let rowIndex = IndexPath(row: self.taskLists.count - 1, section: 0)
-                self.tableView.insertRows(at: [rowIndex], with: .automatic)
+                DBHelper.shared.insert(taskListName: newValue)
+                let newTaskList = DBHelper.shared.getTaskLists().last
+                
+                if let newTaskList = newTaskList {
+                    self.taskLists.append(newTaskList)
+                    let rowIndex = IndexPath(row: self.taskLists.count - 1, section: 0)
+                    self.tableView.insertRows(at: [rowIndex], with: .automatic)
+                }
+                
             }
         }
         present(alert, animated: true)
@@ -120,8 +127,8 @@ extension TaskListViewController {
 
 extension UITableViewCell {
     func configure(with taskList: TaskList) {
-        let currentTask = taskList.tasks.filter("isComplete = false")
-        let completedTask = taskList.tasks.filter("isComplete = true")
+        let currentTask = DBHelper.shared.getTasksByTaskList(taskListId: taskList.id, condition: "AND isComplete = 0")
+        let completedTask = DBHelper.shared.getTasksByTaskList(taskListId: taskList.id, condition: "AND isComplete = 1")
         
         textLabel?.text = taskList.name
         

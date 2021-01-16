@@ -5,13 +5,14 @@
 //  Created by Artem Golubev on 11.01.2021.
 //
 
-import RealmSwift
+import Foundation
 
-class User: Object {
-    @objc dynamic var login = ""
-    @objc dynamic var password = ""
+class User {
+    var login = ""
+    var password = ""
     
-    override static func primaryKey() -> String? {
-            return "login"
+    init(login: String, password: String) {
+        self.login = login
+        self.password = password
     }
 }

@@ -6,20 +6,23 @@
 //
 
 import UIKit
-import RealmSwift
 
 class TasksViewController: UITableViewController {
     
     var taskList: TaskList!
     
-    var currentTasks: Results<Task>!
-    var completedTasks: Results<Task>!
+    var currentTasks: [Task]!
+    var completedTasks: [Task]!
+    
+    private func updateTasks() {
+        currentTasks = DBHelper.shared.getTasksByTaskList(taskListId: taskList.id, condition: "AND isComplete = 0")
+        completedTasks = DBHelper.shared.getTasksByTaskList(taskListId: taskList.id, condition: "AND isComplete = 1")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = taskList.name
-        currentTasks = taskList.tasks.filter("isComplete = false")
-        completedTasks = taskList.tasks.filter("isComplete = true")
+        updateTasks()
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
         navigationItem.rightBarButtonItems = [addButton, editButtonItem]
@@ -59,7 +62,9 @@ class TasksViewController: UITableViewController {
         let task = indexPath.section == 0 ? currentTasks[indexPath.row] : completedTasks[indexPath.row]
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
-            StorageManager.shared.delete(task: task)
+            DBHelper.shared.deleteByID(task: task.id)
+            //TODO: - think about better solution
+            self.updateTasks()
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         
@@ -72,8 +77,9 @@ class TasksViewController: UITableViewController {
         }
         
         let doneAction = UIContextualAction(style: .normal, title: "Done") { (_, _, isDone) in
-            StorageManager.shared.done(task: task)
-            
+            //StorageManager.shared.done(task: task)
+            DBHelper.shared.done(task: task)
+            self.updateTasks()
             let indexPathForCurrentTasks = IndexPath(row: self.currentTasks.count - 1, section: 0)
             let indexPathForCompletedTasks = IndexPath(row: self.completedTasks.count - 1, section: 1)
             let destinationIndexRow = indexPath.section == 0 ? indexPathForCompletedTasks : indexPathForCurrentTasks
@@ -101,13 +107,15 @@ extension TasksViewController {
         
         alert.action(with: task) { (newName, newNote) in
             if let task = task, let completion = completion {
-                StorageManager.shared.edit(task: task, name: newName, note: newNote)
+                
+                DBHelper.shared.update(task: task, newName: newName, newNote: newNote)
+                self.updateTasks()
                 completion()
             } else {
-                let task = Task(value: [newName, newNote])
-                
-                StorageManager.shared.save(task: task, in: self.taskList)
-                
+                let task = Task(name: newName, note: newNote, taskList: self.taskList.id)
+                print(task)
+                DBHelper.shared.insert(task: task)
+                self.updateTasks()
                 let rowIndex = IndexPath(row: self.currentTasks.count - 1, section: 0)
                 self.tableView.insertRows(at: [rowIndex], with: .automatic)
             }

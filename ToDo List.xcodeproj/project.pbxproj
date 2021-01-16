@@ -22,6 +22,7 @@
 		D5D4C66925ABCC44003ED6AD /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D4C66825ABCC44003ED6AD /* TaskList.swift */; };
 		D5D4C66C25ABCC56003ED6AD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D4C66B25ABCC56003ED6AD /* User.swift */; };
 		D5D4C67B25AC7119003ED6AD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D4C67A25AC7119003ED6AD /* SignUpViewController.swift */; };
+		D5D4C69025AF6E1F003ED6AD /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D4C68F25AF6E1F003ED6AD /* DBHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		D5D4C66825ABCC44003ED6AD /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		D5D4C66B25ABCC56003ED6AD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D5D4C67A25AC7119003ED6AD /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		D5D4C68F25AF6E1F003ED6AD /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		DC9E18096099F306E1E627C5 /* Pods-ToDo List.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo List.release.xcconfig"; path = "Target Support Files/Pods-ToDo List/Pods-ToDo List.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,6 +133,7 @@
 		D5D4C67325ABCCF2003ED6AD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D5D4C68225AE41C8003ED6AD /* SQLite */,
 				D5D4C65725AA02E2003ED6AD /* StorageManager.swift */,
 				D5D4C65425A9FF14003ED6AD /* Task.swift */,
 				D5D4C66825ABCC44003ED6AD /* TaskList.swift */,
@@ -153,6 +156,14 @@
 				D5D4C63A25A8A31E003ED6AD /* Assets.xcassets */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		D5D4C68225AE41C8003ED6AD /* SQLite */ = {
+			isa = PBXGroup;
+			children = (
+				D5D4C68F25AF6E1F003ED6AD /* DBHelper.swift */,
+			);
+			path = SQLite;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,6 +291,7 @@
 				D5D4C65525A9FF14003ED6AD /* Task.swift in Sources */,
 				D5D4C66C25ABCC56003ED6AD /* User.swift in Sources */,
 				D5D4C63425A8A31B003ED6AD /* SceneDelegate.swift in Sources */,
+				D5D4C69025AF6E1F003ED6AD /* DBHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

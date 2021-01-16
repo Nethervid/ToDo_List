@@ -23,34 +23,38 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signupPressed() {
         
-        if loginTextField.text == nil
-            || passwordTextField.text == nil
-            || confirmPasswordTextField.text == nil {
-            
-            showAlert(title: "Not all fields are filled",
-                      message: "Please, enter login and password")
-            return
-            
-        } else if passwordTextField.text != confirmPasswordTextField.text {
-            
+        guard let login = loginTextField.text else { showAlert(title: "Not all fields are filled",
+                                                               message: "Please, enter login and password")
+                                                     return }
+        guard let password = passwordTextField.text else { showAlert(title: "Not all fields are filled",
+                                                               message: "Please, enter login and password")
+                                                     return }
+        guard let confirmPassword = confirmPasswordTextField.text else { showAlert(title: "Not all fields are filled",
+                                                               message: "Please, enter login and password")
+                                                     return }
+        
+        let users = DBHelper.shared.getAllUsers()
+        var hasUser = false
+        for user in users {
+            if user.login == login {
+                hasUser = true
+            }
+        }
+        
+        if password != confirmPassword {
             showAlert(title: "Password do not match",
                       message: "Please, enter correct login and password")
             return
             
-        } else if StorageManager.shared.realm.objects(User.self)
-            .filter("login = %@ AND password = %@",
-                    loginTextField.text ?? "",
-                    passwordTextField.text ?? "")
-            .count > 0 {
-            
+        } else if hasUser {
             showAlert(title: "User already exists",
                       message: "Please, enter another correct login and password")
             return
         }
         
-        let user = User(value: ["login": loginTextField.text, "password": passwordTextField.text])
+        let user = User(login: loginTextField.text ?? "", password: passwordTextField.text ?? "")
         userSettings.set(user.login, forKey: "user")
-        StorageManager.shared.save(user: user)
+        DBHelper.shared.insert(user: user)
         performSegue(withIdentifier: "signup", sender: nil)
     }
     

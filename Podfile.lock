@@ -4,19 +4,34 @@ PODS:
   - Realm/Headers (10.5.0)
   - RealmSwift (10.5.0):
     - Realm (= 10.5.0)
+  - SQLite.swift (0.12.2):
+    - SQLite.swift/standard (= 0.12.2)
+  - SQLite.swift/standard (0.12.2)
 
 DEPENDENCIES:
   - RealmSwift
+  - SQLite.swift (from `https://github.com/stephencelis/SQLite.swift.git`, branch `master`)
 
 SPEC REPOS:
   trunk:
     - Realm
     - RealmSwift
 
+EXTERNAL SOURCES:
+  SQLite.swift:
+    :branch: master
+    :git: https://github.com/stephencelis/SQLite.swift.git
+
+CHECKOUT OPTIONS:
+  SQLite.swift:
+    :commit: 70fb7af324cb3170d921f135f0c84cbdb6487cc2
+    :git: https://github.com/stephencelis/SQLite.swift.git
+
 SPEC CHECKSUMS:
   Realm: e1c22c3d83b229afb70ebc10e1771c91e9542d12
   RealmSwift: 6fc078d9d3fd7e58c71bfdbb694e252462f112a5
+  SQLite.swift: 70f830d00b7ccd59dd634e2177d43f7541066fdc
 
-PODFILE CHECKSUM: dcad3e31ff055595ef150c682422f61521b7529a
+PODFILE CHECKSUM: f021dea44b642359e7f03feb07fb1e1cd2d7f994
 
 COCOAPODS: 1.10.1

@@ -5,7 +5,7 @@
 //  Created by Artem Golubev on 09.01.2021.
 //
 
-import RealmSwift
+/*import RealmSwift
 
 class StorageManager {
     static let shared = StorageManager()
@@ -88,3 +88,4 @@ class StorageManager {
         }
     }
 }
+*/
