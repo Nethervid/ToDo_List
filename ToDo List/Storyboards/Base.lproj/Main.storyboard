@@ -258,7 +258,7 @@
                                                         <rect key="frame" x="183" y="0.0" width="52" height="30"/>
                                                         <state key="normal" title="Sign up"/>
                                                         <connections>
-                                                            <segue destination="OEN-0N-VKS" kind="showDetail" id="yI8-f4-UJT"/>
+                                                            <segue destination="OEN-0N-VKS" kind="presentation" modalPresentationStyle="automatic" id="yI8-f4-UJT"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -434,7 +434,6 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="signupPressed" destination="OEN-0N-VKS" eventType="touchUpInside" id="tBY-Xk-2xD"/>
-                                                    <segue destination="DpD-gr-uDv" kind="presentation" identifier="signup" modalPresentationStyle="fullScreen" id="DdJ-V2-GIp"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -466,6 +465,7 @@
                         <outlet property="confirmPasswordTextField" destination="nDg-rN-7ea" id="TSh-3w-cFZ"/>
                         <outlet property="loginTextField" destination="XqK-kM-fxk" id="iDi-yw-DW9"/>
                         <outlet property="passwordTextField" destination="Ddk-ZT-9XN" id="65g-EH-H8g"/>
+                        <segue destination="DpD-gr-uDv" kind="presentation" identifier="signup" modalPresentationStyle="fullScreen" id="vOi-hH-51E"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9dA-tH-Cdc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -474,7 +474,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="JIN-lR-0Gb"/>
+        <segue reference="vOi-hH-51E"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="plus" catalog="system" width="128" height="113"/>

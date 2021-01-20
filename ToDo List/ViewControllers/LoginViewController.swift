@@ -16,7 +16,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         DBHelper.shared.createTables()
     }
     
@@ -28,17 +27,16 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginPressed() {
-        //let users = StorageManager.shared.realm.objects(User.self)
-        //    .filter("login = %@ AND password = %@", loginTextField.text ?? "", passwordTextField.text ?? "")
+
         let users = DBHelper.shared.getAllUsers()
-        var user: User?
+        var user: User? = nil
         for userFromArray in users {
             if userFromArray.login == loginTextField.text
                 && userFromArray.password == passwordTextField.text {
                 user = userFromArray
             }
         }
-
+        
         if user == nil {
             showAlert(title: "Invalid login or password",
                       message: "Please, enter correct login and password",

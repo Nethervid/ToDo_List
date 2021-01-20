@@ -35,7 +35,7 @@ class DBHelper {
         let createTableString = """
                                     CREATE TABLE IF NOT EXISTS "user"("login" TEXT PRIMARY KEY,"password" TEXT);
                                     CREATE TABLE IF NOT EXISTS "taskList" ("id" INTEGER,
-                                                                           "name"
+                                                                           "name" TEXT,
                                                                            "creationDate" DATETIME,
                                                                            "user" TEXT,
                                                                            FOREIGN KEY("user") REFERENCES "user"("login"),
@@ -46,6 +46,7 @@ class DBHelper {
                                                                       "note" TEXT,
                                                                       "isComplete" INTEGER,
                                                                       "taskList" INTEGER,
+                                                                      "creationDate" DATETIME,
                                                                       FOREIGN KEY(taskList) REFERENCES taskList(id));
                                 """
         var createTableStatement: OpaquePointer? = nil
@@ -92,7 +93,6 @@ class DBHelper {
         if val == SQLITE_OK {
             sqlite3_bind_text(insertStatement, 1, (taskListName as NSString).utf8String, -1, nil)
             sqlite3_bind_text(insertStatement, 2, (userName as NSString).utf8String, -1, nil)
-            sqlite3_bind_int(insertStatement, 3, Int32(Date().timeIntervalSince1970))
             
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 print("Successfully inserted row.")

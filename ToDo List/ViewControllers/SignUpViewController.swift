@@ -18,44 +18,49 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                  
     }
     
     @IBAction func signupPressed() {
+       
+        let login = loginTextField.text
+        let password = passwordTextField.text
+        let confirmPassword = confirmPasswordTextField.text
         
-        guard let login = loginTextField.text else { showAlert(title: "Not all fields are filled",
-                                                               message: "Please, enter login and password")
-                                                     return }
-        guard let password = passwordTextField.text else { showAlert(title: "Not all fields are filled",
-                                                               message: "Please, enter login and password")
-                                                     return }
-        guard let confirmPassword = confirmPasswordTextField.text else { showAlert(title: "Not all fields are filled",
-                                                               message: "Please, enter login and password")
-                                                     return }
-        
-        let users = DBHelper.shared.getAllUsers()
-        var hasUser = false
-        for user in users {
-            if user.login == login {
-                hasUser = true
-            }
-        }
-        
-        if password != confirmPassword {
-            showAlert(title: "Password do not match",
-                      message: "Please, enter correct login and password")
-            return
+
+    
+        if password != nil && password != ""
+            && login != nil && login != ""
+            && confirmPassword != nil && confirmPassword != "" {
             
-        } else if hasUser {
-            showAlert(title: "User already exists",
-                      message: "Please, enter another correct login and password")
+            let users = DBHelper.shared.getAllUsers()
+            var hasUser = false
+            for user in users {
+                if user.login == login {
+                    hasUser = true
+                }
+            }
+            
+            if password != confirmPassword {
+                showAlert(title: "Passwordы do not match",
+                          message: "Please, enter correct login and password")
+                return
+                
+            } else if hasUser {
+                showAlert(title: "User already exists",
+                          message: "Please, enter another correct login and password")
+                return
+            }
+            
+            let user = User(login: loginTextField.text ?? "", password: passwordTextField.text ?? "")
+            userSettings.set(user.login, forKey: "user")
+            DBHelper.shared.insert(user: user)
+            performSegue(withIdentifier: "signup", sender: nil)
+        } else {
+            showAlert(title: "Not all fields are filled",
+                      message: "Please, enter correct data")
             return
         }
-        
-        let user = User(login: loginTextField.text ?? "", password: passwordTextField.text ?? "")
-        userSettings.set(user.login, forKey: "user")
-        DBHelper.shared.insert(user: user)
-        performSegue(withIdentifier: "signup", sender: nil)
     }
     
 }

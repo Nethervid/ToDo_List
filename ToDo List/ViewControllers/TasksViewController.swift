@@ -63,7 +63,6 @@ class TasksViewController: UITableViewController {
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
             DBHelper.shared.deleteByID(task: task.id)
-            //TODO: - think about better solution
             self.updateTasks()
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
@@ -77,7 +76,6 @@ class TasksViewController: UITableViewController {
         }
         
         let doneAction = UIContextualAction(style: .normal, title: "Done") { (_, _, isDone) in
-            //StorageManager.shared.done(task: task)
             DBHelper.shared.done(task: task)
             self.updateTasks()
             let indexPathForCurrentTasks = IndexPath(row: self.currentTasks.count - 1, section: 0)
